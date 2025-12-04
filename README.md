@@ -58,17 +58,17 @@ Je ziet:
 1. Open Portainer op je NAS.
 2. Ga naar **Stacks** → **Add stack**.
 3. Kies **Web editor** en plak de inhoud van `docker-compose.yml`, of kies **Upload** en upload het bestand vanaf de NAS.
-4. Controleer dat poort **3000:3000** wordt gepubliceerd.
+4. Controleer dat poort **8082:3000** wordt gepubliceerd.
 5. Klik op **Deploy the stack**.
 
-Als de stack draait, is de display lokaal beschikbaar op `http://NAS-IP:3000`.
+Als de stack draait, is de display lokaal beschikbaar op `http://NAS-IP:8082`.
 
 ### 3. Cloudflare Tunnel koppelen
 
 De uitgebreide stappen staan in `DEPLOYMENT.md` onder **Optie 2: Cloudflare Tunnel**. Kort:
 
 1. Installeer `cloudflared` op je NAS.
-2. Maak een tunnel aan die naar `http://localhost:3000` wijst.
+2. Maak een tunnel aan die naar `http://localhost:8082` wijst.
 3. Koppel een hostname, bijvoorbeeld `3fm.jouwdomein.nl`, aan de tunnel.
 4. Start de tunnel als service, zodat hij automatisch mee opstart.
 

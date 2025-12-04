@@ -40,11 +40,11 @@ docker-compose logs -f
 ### 3. Testen
 
 ```bash
-# Lokaal op NAS
-curl http://localhost:3000/api
+# Lokaal op NAS (via host-poort 8082)
+curl http://localhost:8082/api
 
 # Vanaf je laptop (vervang NAS-IP)
-curl http://192.168.1.xxx:3000/api
+curl http://192.168.1.xxx:8082/api
 ```
 
 ## 🌍 Naar de Wereld Exposen
@@ -55,9 +55,9 @@ Je hebt **3 opties** om de display naar de wereld te exposen:
 
 **Stappen:**
 1. Log in op je router
-2. Forward poort `3000` (of `80`/`443`) naar je NAS IP
+2. Forward poort `8082` (of `80`/`443`) naar je NAS IP
 3. Vind je publieke IP: `curl ifconfig.me`
-4. Toegang via: `http://[jouw-publieke-ip]:3000`
+4. Toegang via: `http://[jouw-publieke-ip]:8082`
 
 **Nadelen:**
 - Geen HTTPS (onveilig)
@@ -105,7 +105,7 @@ credentials-file: /home/user/.cloudflared/<TUNNEL-ID>.json
 
 ingress:
   - hostname: 3fm.jouwdomein.nl
-    service: http://localhost:3000
+    service: http://localhost:8082
   - service: http_status:404
 ```
 
@@ -252,8 +252,8 @@ docker run -d \
 # Check logs
 docker-compose logs
 
-# Check port conflict
-sudo lsof -i :3000
+# Check port conflict voor host-poort 8082
+sudo lsof -i :8082
 
 # Rebuild
 docker-compose up -d --build --force-recreate
@@ -265,8 +265,8 @@ docker-compose up -d --build --force-recreate
 # Test binnen container
 docker exec 3fm-serious-request wget -O- http://localhost:3000/api
 
-# Test vanaf NAS
-curl http://localhost:3000/api
+# Test vanaf NAS (via host-poort 8082)
+curl http://localhost:8082/api
 
 # Check firewall
 sudo ufw status
@@ -318,7 +318,7 @@ sudo docker-compose up -d
 
 Na deployment:
 
-- **Lokaal netwerk**: `http://nas-ip:3000`
+- **Lokaal netwerk**: `http://nas-ip:8082`
 - **Met Cloudflare**: `https://3fm.jouwdomein.nl`
 - **Met reverse proxy**: `https://3fm.jouwdomein.nl`
 - **Direct (port forward)**: `http://jouw-publieke-ip:3000`
@@ -327,7 +327,7 @@ Na deployment:
 
 Bij problemen:
 1. Check de logs: `docker-compose logs -f`
-2. Test de API: `curl http://localhost:3000/api`
+2. Test de API: `curl http://localhost:8082/api`
 3. Verify health: `docker inspect 3fm-serious-request`
 
 ---
