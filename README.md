@@ -86,13 +86,13 @@ Op de Gobride:
 ## 🔧 Hoe het werkt
 
 1. **Server (`server.js`)**:
-   - Scraped elke 10 seconden de NPO 3FM website
+   - Scraped ongeveer elke 5 minuten de NPO 3FM website
    - Haalt `collectedAmount`, `targetAmount` en `donations` op
    - Serveert de HTML/CSS/JS bestanden
    - Biedt een `/api` endpoint voor de data
 
 2. **Client (`app.js`)**:
-   - Fetcht data van `/api` elke 10 seconden
+   - Fetcht data van `/api` elke 5 minuten
    - Animeert het bedrag met smooth counting
    - Update de progress bar
    - Toont recente donaties in cards
@@ -126,7 +126,7 @@ Op de Gobride:
 ## 🎨 Features
 
 - ✅ **Dark mode** met 3FM branding (paars/magenta)
-- ✅ **Live updates** elke 10 seconden
+- ✅ **Live updates** ongeveer elke 5 minuten
 - ✅ **Smooth animaties** voor bedragen en progress
 - ✅ **Responsive design** (werkt op elk scherm)
 - ✅ **Glow effects** en micro-animaties
@@ -216,5 +216,5 @@ Elke donatie telt. Samen maken we het verschil! 💪
 
 **Gemaakt voor**: Maasland Merry Miles - 3FM Serious Request
 **Tech Stack**: Node.js, Vanilla HTML/CSS/JS
-**Update Interval**: 10 seconden
+**Update Interval**: 5 minuten (aanpasbaar in `app.js` en `server.js`)
 **Port**: 3000

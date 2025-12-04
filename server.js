@@ -98,6 +98,8 @@ http.createServer(async (req, res) => {
 }).listen(PORT, '0.0.0.0', () => {
   console.log('='.repeat(60));
   console.log('🎉 3FM Serious Request Display Server');
+  // Scrape every 5 minutes (300000 ms) instead of 10 seconds
+  setInterval(scrapeData, 300000);
   console.log('='.repeat(60));
   console.log(`📡 Server running on port ${PORT}`);
   console.log(`🌐 Local:   http://localhost:${PORT}`);

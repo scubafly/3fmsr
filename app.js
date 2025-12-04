@@ -1,6 +1,6 @@
 // Configuration
 const API_URL = '/api';
-const UPDATE_INTERVAL = 10000; // Update every 10 seconds
+const UPDATE_INTERVAL = 300000; // Update every 5 minutes
 
 // DOM Elements
 const elements = {

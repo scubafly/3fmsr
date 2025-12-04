@@ -1,0 +1,25 @@
+# Node modules (we don't have any, but good practice)
+node_modules
+npm-debug.log
+
+# Development files
+debug.js
+start.sh
+
+# Git
+.git
+.gitignore
+
+# Documentation (already copied in Dockerfile)
+*.md
+!README.md
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
