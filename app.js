@@ -1,7 +1,7 @@
 // Configuration
 const API_URL = '/api';
 const UPDATE_INTERVAL = 300000; // Update every 5 minutes
-const MAX_VISIBLE_DONATIONS = 9; // Max cards to show at once on FHD
+const MAX_VISIBLE_DONATIONS = 6; // Max cards to show at once on SHD/FHD
 
 // DOM Elements
 const elements = {
@@ -9,7 +9,8 @@ const elements = {
     targetAmount: document.getElementById('target-amount'),
     progressBar: document.getElementById('progress-bar'),
     progressPercentage: document.getElementById('progress-percentage'),
-    donationsList: document.getElementById('donations-list')
+    donationsListLeft: document.getElementById('donations-list-left'),
+    donationsListRight: document.getElementById('donations-list-right')
 };
 
 // State
@@ -104,13 +105,14 @@ function createDonationCard(donation, index) {
  */
 function updateDonations(donations) {
     // Clear loading state
-    elements.donationsList.innerHTML = '';
+    elements.donationsListLeft.innerHTML = '';
+    elements.donationsListRight.innerHTML = '';
 
     if (!donations || donations.length === 0) {
         const emptyState = document.createElement('div');
         emptyState.className = 'loading';
         emptyState.textContent = 'Nog geen donaties';
-        elements.donationsList.appendChild(emptyState);
+        elements.donationsListLeft.appendChild(emptyState);
         return;
     }
 
@@ -121,7 +123,12 @@ function updateDonations(donations) {
     if (recentDonations.length <= MAX_VISIBLE_DONATIONS) {
         recentDonations.forEach((donation, index) => {
             const card = createDonationCard(donation, index);
-            elements.donationsList.appendChild(card);
+            // Alternate between left and right
+            if (index % 2 === 0) {
+                elements.donationsListLeft.appendChild(card);
+            } else {
+                elements.donationsListRight.appendChild(card);
+            }
         });
         visibleDonationsOffset = 0;
         return;
@@ -142,7 +149,12 @@ function updateDonations(donations) {
 
     visibleDonations.forEach((donation, index) => {
         const card = createDonationCard(donation, index);
-        elements.donationsList.appendChild(card);
+        // Alternate between left and right
+        if (index % 2 === 0) {
+            elements.donationsListLeft.appendChild(card);
+        } else {
+            elements.donationsListRight.appendChild(card);
+        }
     });
 }
 
@@ -187,8 +199,8 @@ async function fetchData() {
         console.error('❌ Error fetching data:', error);
 
         // Show error state in donations list if it's empty
-        if (elements.donationsList.children.length === 0) {
-            elements.donationsList.innerHTML = `
+        if (elements.donationsListLeft.children.length === 0) {
+            elements.donationsListLeft.innerHTML = `
                 <div class="loading" style="color: var(--color-accent);">
                     Fout bij laden van data. Probeer de pagina te verversen...
                 </div>

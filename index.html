@@ -12,15 +12,18 @@
 </head>
 <body>
     <div class="container">
-        <header class="header">
-            <div class="logo-area">
-                <h1 class="campaign-title">Maasland Merry Miles</h1>
-                <p class="campaign-subtitle">3FM Serious Request</p>
-            </div>
-        </header>
-
         <main class="main-content">
+            <section class="donations-section donations-left">
+                <div id="donations-list-left" class="donations-list">
+                    <div class="loading">Laden...</div>
+                </div>
+            </section>
+        
             <section class="hero">
+                <div class="logo-area">
+                    <h1 class="campaign-title">Maasland Merry Miles</h1>
+                    <p class="campaign-subtitle">3FM Serious Request</p>
+                </div>
                 <div class="amount-display">
                     <div class="current-amount">
                         <span class="currency">€</span>
@@ -30,7 +33,6 @@
                         van <span class="currency">€</span><span id="target-amount">5000</span>
                     </div>
                 </div>
-
                 <div class="progress-container">
                     <div id="progress-bar" class="progress-bar" style="width: 0%">
                         <span id="progress-percentage" class="progress-percentage">0%</span>
@@ -38,20 +40,12 @@
                 </div>
             </section>
 
-            <section class="donations-section">
-                <h2 class="section-title">
-                    <span class="title-icon">❤️</span>
-                    Recente Donaties
-                </h2>
-                <div id="donations-list" class="donations-list">
+            <section class="donations-section donations-right">
+                <div id="donations-list-right" class="donations-list">
                     <div class="loading">Laden...</div>
                 </div>
             </section>
         </main>
-
-        <footer class="footer">
-            <p>Live updates | Bedankt voor jullie steun! 🎄</p>
-        </footer>
     </div>
 
     <script src="app.js"></script>
