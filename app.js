@@ -1,7 +1,8 @@
 // Configuration
 const API_URL = '/api';
 const UPDATE_INTERVAL = 300000; // Update every 5 minutes
-const MAX_VISIBLE_DONATIONS = 6; // Max cards to show at once on SHD/FHD
+const MAX_VISIBLE_DONATIONS = 8; // Max cards to show at once (4 left, 4 right)
+const ROTATION_INTERVAL = 10000; // Rotate one card every 3 seconds
 
 // DOM Elements
 const elements = {
@@ -16,6 +17,9 @@ const elements = {
 // State
 let previousAmount = 0;
 let visibleDonationsOffset = 0;
+let allDonations = []; // Store all available donations
+let visibleDonations = []; // Store currently visible donations with their positions
+let rotationInterval = null;
 
 /**
  * Format number with thousands separator
@@ -84,7 +88,7 @@ function createDonationCard(donation, index) {
 
     const amount = document.createElement('div');
     amount.className = 'donation-amount';
-    amount.textContent = `€ ${formatNumber(donation.amount)}`;
+    amount.innerHTML = `<span class="currency">€</span> ${formatNumber(donation.amount)}`;
 
     header.appendChild(name);
     header.appendChild(amount);
@@ -113,49 +117,119 @@ function updateDonations(donations) {
         emptyState.className = 'loading';
         emptyState.textContent = 'Nog geen donaties';
         elements.donationsListLeft.appendChild(emptyState);
+        allDonations = [];
+        visibleDonations = [];
+        if (rotationInterval) {
+            clearInterval(rotationInterval);
+            rotationInterval = null;
+        }
         return;
     }
 
     // Most recent donations first (reverse order)
-    const recentDonations = [...donations].reverse();
+    allDonations = [...donations].reverse();
 
     // If there are not many donations, just show all of them
-    if (recentDonations.length <= MAX_VISIBLE_DONATIONS) {
-        recentDonations.forEach((donation, index) => {
-            const card = createDonationCard(donation, index);
-            // Alternate between left and right
-            if (index % 2 === 0) {
+    if (allDonations.length <= MAX_VISIBLE_DONATIONS) {
+        visibleDonations = allDonations.map((donation, index) => ({
+            donation,
+            side: index % 2 === 0 ? 'left' : 'right',
+            position: Math.floor(index / 2)
+        }));
+
+        visibleDonations.forEach(({ donation, side, position }) => {
+            const card = createDonationCard(donation, position);
+            if (side === 'left') {
                 elements.donationsListLeft.appendChild(card);
             } else {
                 elements.donationsListRight.appendChild(card);
             }
         });
-        visibleDonationsOffset = 0;
+
+        // Start rotation if we have more donations than visible
+        if (allDonations.length > MAX_VISIBLE_DONATIONS) {
+            startRotation();
+        } else if (rotationInterval) {
+            clearInterval(rotationInterval);
+            rotationInterval = null;
+        }
         return;
     }
 
-    // Rotate through the list in blocks of MAX_VISIBLE_DONATIONS
-    if (visibleDonationsOffset >= recentDonations.length) {
-        visibleDonationsOffset = 0;
-    }
-
-    const visibleDonations = [];
+    // Initialize with first MAX_VISIBLE_DONATIONS
+    visibleDonations = [];
     for (let i = 0; i < MAX_VISIBLE_DONATIONS; i++) {
-        const index = (visibleDonationsOffset + i) % recentDonations.length;
-        visibleDonations.push(recentDonations[index]);
+        visibleDonations.push({
+            donation: allDonations[i],
+            side: i % 2 === 0 ? 'left' : 'right',
+            position: Math.floor(i / 2)
+        });
     }
 
-    visibleDonationsOffset = (visibleDonationsOffset + MAX_VISIBLE_DONATIONS) % recentDonations.length;
-
-    visibleDonations.forEach((donation, index) => {
-        const card = createDonationCard(donation, index);
-        // Alternate between left and right
-        if (index % 2 === 0) {
+    // Render initial cards
+    visibleDonations.forEach(({ donation, side, position }) => {
+        const card = createDonationCard(donation, position);
+        if (side === 'left') {
             elements.donationsListLeft.appendChild(card);
         } else {
             elements.donationsListRight.appendChild(card);
         }
     });
+
+    // Start rotation
+    startRotation();
+}
+
+/**
+ * Rotate one donation card with a new one from allDonations
+ */
+function rotateDonation() {
+    if (allDonations.length <= MAX_VISIBLE_DONATIONS) {
+        return; // Not enough donations to rotate
+    }
+
+    // Get all donations that are not currently visible
+    const visibleDonationIndices = visibleDonations.map(v => allDonations.indexOf(v.donation));
+    const availableDonations = allDonations
+        .map((donation, index) => ({ donation, index }))
+        .filter(({ index }) => !visibleDonationIndices.includes(index));
+
+    if (availableDonations.length === 0) {
+        return; // No new donations to show
+    }
+
+    // Pick a random visible card to replace
+    const randomVisibleIndex = Math.floor(Math.random() * visibleDonations.length);
+    const { side, position } = visibleDonations[randomVisibleIndex];
+
+    // Pick a random new donation
+    const randomNewDonation = availableDonations[Math.floor(Math.random() * availableDonations.length)];
+
+    // Update the visible donations array
+    visibleDonations[randomVisibleIndex] = {
+        donation: randomNewDonation.donation,
+        side,
+        position
+    };
+
+    // Replace the card in the DOM
+    const targetList = side === 'left' ? elements.donationsListLeft : elements.donationsListRight;
+    const oldCard = targetList.children[position];
+    const newCard = createDonationCard(randomNewDonation.donation, position);
+
+    if (oldCard) {
+        targetList.replaceChild(newCard, oldCard);
+    }
+}
+
+/**
+ * Start the rotation interval
+ */
+function startRotation() {
+    if (rotationInterval) {
+        clearInterval(rotationInterval);
+    }
+    rotationInterval = setInterval(rotateDonation, ROTATION_INTERVAL);
 }
 
 /**
@@ -226,6 +300,15 @@ function init() {
         if (!document.hidden) {
             console.log('👀 Tab visible again, fetching fresh data');
             fetchData();
+            if (allDonations.length > MAX_VISIBLE_DONATIONS) {
+                startRotation();
+            }
+        } else {
+            // Pause rotation when tab is hidden
+            if (rotationInterval) {
+                clearInterval(rotationInterval);
+                rotationInterval = null;
+            }
         }
     });
 }
