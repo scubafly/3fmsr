@@ -1,6 +1,7 @@
 // Configuration
 const API_URL = '/api';
 const UPDATE_INTERVAL = 300000; // Update every 5 minutes
+const MAX_VISIBLE_DONATIONS = 9; // Max cards to show at once on FHD
 
 // DOM Elements
 const elements = {
@@ -13,6 +14,7 @@ const elements = {
 
 // State
 let previousAmount = 0;
+let visibleDonationsOffset = 0;
 
 /**
  * Format number with thousands separator
@@ -112,10 +114,33 @@ function updateDonations(donations) {
         return;
     }
 
-    // Show most recent donations first (reverse order)
-    const recentDonations = [...donations].reverse().slice(0, 50);
+    // Most recent donations first (reverse order)
+    const recentDonations = [...donations].reverse();
 
-    recentDonations.forEach((donation, index) => {
+    // If there are not many donations, just show all of them
+    if (recentDonations.length <= MAX_VISIBLE_DONATIONS) {
+        recentDonations.forEach((donation, index) => {
+            const card = createDonationCard(donation, index);
+            elements.donationsList.appendChild(card);
+        });
+        visibleDonationsOffset = 0;
+        return;
+    }
+
+    // Rotate through the list in blocks of MAX_VISIBLE_DONATIONS
+    if (visibleDonationsOffset >= recentDonations.length) {
+        visibleDonationsOffset = 0;
+    }
+
+    const visibleDonations = [];
+    for (let i = 0; i < MAX_VISIBLE_DONATIONS; i++) {
+        const index = (visibleDonationsOffset + i) % recentDonations.length;
+        visibleDonations.push(recentDonations[index]);
+    }
+
+    visibleDonationsOffset = (visibleDonationsOffset + MAX_VISIBLE_DONATIONS) % recentDonations.length;
+
+    visibleDonations.forEach((donation, index) => {
         const card = createDonationCard(donation, index);
         elements.donationsList.appendChild(card);
     });

@@ -1,28 +1,34 @@
 /* CSS Variables - Design System */
 :root {
-    /* 3FM Brand Colors - Vibrant & Premium */
-    --color-primary: hsl(280, 85%, 55%);
-    --color-primary-light: hsl(280, 85%, 65%);
-    --color-primary-dark: hsl(280, 85%, 45%);
-    --color-accent: hsl(320, 85%, 55%);
-    --color-accent-glow: hsl(320, 85%, 65%);
+    /* Brand Colors - Maasland Merry Miles */
+        --color-primary: #5e0b4f;
+        /* donkerpaars */
+        --color-primary-light: #a61a74;
+        /* magenta */
+        --color-primary-dark: #3b0233;
+        /* extra donkerpaars voor contrast */
 
-    /* Background Colors */
-    --color-bg-primary: hsl(240, 15%, 8%);
-    --color-bg-secondary: hsl(240, 12%, 12%);
-    --color-bg-card: hsl(240, 10%, 15%);
-    --color-bg-card-hover: hsl(240, 10%, 18%);
+    --color-accent: #61c3d9;
+        /* lichtblauw */
+        --color-accent-glow: #ffd600;
+        /* geel/oranje accent */
+    
+        /* Background Colors (licht thema met huisstijlkleuren) */
+        --color-bg-primary: #ffffff;
+        --color-bg-secondary: #f8f8f8;
+        --color-bg-card: #ffffff;
+        --color-bg-card-hover: #f0f0f0;
 
     /* Text Colors */
-    --color-text-primary: hsl(0, 0%, 98%);
-    --color-text-secondary: hsl(0, 0%, 75%);
-    --color-text-muted: hsl(0, 0%, 55%);
+    --color-text-primary: #000000;
+        --color-text-secondary: #555555;
+        --color-text-muted: #888888;
 
     /* Gradients */
     --gradient-primary: linear-gradient(135deg, var(--color-primary) 0%, var(--color-accent) 100%);
     --gradient-glow: linear-gradient(135deg,
-        hsla(280, 85%, 55%, 0.3) 0%,
-        hsla(320, 85%, 55%, 0.3) 100%);
+        rgba(94, 11, 79, 0.35) 0%,
+            rgba(97, 195, 217, 0.25) 100%);
 
     /* Spacing */
     --spacing-xs: 0.5rem;
@@ -67,29 +73,6 @@ body {
     -moz-osx-font-smoothing: grayscale;
 }
 
-/* Animated Background */
-body::before {
-    content: '';
-    position: fixed;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(circle at 30% 50%,
-        hsla(280, 85%, 25%, 0.15) 0%,
-        transparent 50%),
-        radial-gradient(circle at 70% 50%,
-        hsla(320, 85%, 25%, 0.15) 0%,
-        transparent 50%);
-    animation: backgroundShift 20s ease-in-out infinite;
-    z-index: -1;
-}
-
-@keyframes backgroundShift {
-    0%, 100% { transform: translate(0, 0) rotate(0deg); }
-    50% { transform: translate(-5%, -5%) rotate(180deg); }
-}
-
 /* Container */
 .container {
     max-width: 1400px;
@@ -108,10 +91,11 @@ body::before {
 .logo-area {
     display: inline-block;
     padding: var(--spacing-md) var(--spacing-xl);
-    background: var(--gradient-primary);
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-accent) 50%, var(--color-accent-glow) 100%);
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-glow);
-    animation: pulseGlow 3s ease-in-out infinite;
+    color: #ffffff;
+        text-align: left;
 }
 
 @keyframes pulseGlow {
@@ -127,17 +111,17 @@ body::before {
 }
 
 .campaign-title {
-    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-size: clamp(1.8rem, 4vw, 3rem);
     font-weight: 900;
     letter-spacing: -0.02em;
     margin-bottom: var(--spacing-xs);
-    text-shadow: 0 2px 20px hsla(0, 0%, 0%, 0.5);
+    text-shadow: 0 2px 12px hsla(0, 0%, 0%, 0.4);
 }
 
 .campaign-subtitle {
     font-size: clamp(1rem, 2vw, 1.25rem);
     font-weight: 600;
-    opacity: 0.95;
+    opacity: 0.9;
     letter-spacing: 0.05em;
     text-transform: uppercase;
 }
@@ -176,10 +160,7 @@ body::before {
     font-size: clamp(3rem, 10vw, 8rem);
     font-weight: 900;
     line-height: 1;
-    background: var(--gradient-primary);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: var(--color-primary-dark);
     margin-bottom: var(--spacing-sm);
     animation: amountPulse 2s ease-in-out infinite;
 }
@@ -288,13 +269,24 @@ body::before {
 }
 
 .donation-card {
-    background: var(--color-bg-card);
+    background: var(--color-primary);
     border-radius: var(--radius-md);
     padding: var(--spacing-md);
     box-shadow: var(--shadow-sm);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    border: 1px solid hsla(280, 85%, 55%, 0.1);
+    border: none;
     animation: slideIn 0.5s ease-out backwards;
+    color: #ffffff;
+    }
+    
+    .donation-card:nth-child(3n + 2) {
+        background: var(--color-accent);
+        color: #002129;
+    }
+    
+    .donation-card:nth-child(3n + 3) {
+        background: var(--color-accent-glow);
+        color: #3b0233;
 }
 
 @keyframes slideIn {
@@ -309,11 +301,10 @@ body::before {
 }
 
 .donation-card:hover {
-    background: var(--color-bg-card-hover);
+    filter: brightness(1.05);
     transform: translateY(-4px);
     box-shadow: var(--shadow-md),
-                0 0 20px hsla(280, 85%, 55%, 0.2);
-    border-color: hsla(280, 85%, 55%, 0.3);
+                0 0 20px rgba(0, 0, 0, 0.25);
 }
 
 .donation-header {
@@ -326,20 +317,17 @@ body::before {
 .donation-name {
     font-weight: 700;
     font-size: 1.125rem;
-    color: var(--color-text-primary);
+    color: inherit;
 }
 
 .donation-amount {
     font-weight: 700;
     font-size: 1.25rem;
-    background: var(--gradient-primary);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: inherit;
 }
 
 .donation-message {
-    color: var(--color-text-secondary);
+    color: inherit;
     font-size: 0.9375rem;
     font-style: italic;
     line-height: 1.5;
