@@ -21,7 +21,7 @@ Deze setup is speciaal gemaakt voor gebruik op een **Gobride** (Google Chromebox
 
 ## 🚀 Snelstart
 
-### 1. Server Starten
+### 1. Server Starten (lokaal)
 
 Op je laptop, Raspberry Pi, of andere machine:
 
@@ -45,6 +45,34 @@ Je ziet:
    API:     http://localhost:3000/api
 ============================================================
 ```
+
+## 🧊 NAS / Portainer / Cloudflare Tunnel
+
+### 1. Project op je NAS zetten
+
+- Kopieer de map `3fmsr` naar je NAS (bijvoorbeeld naar `/volume1/docker/3fm-display` op een Synology).
+- Zorg dat `Dockerfile`, `docker-compose.yml` en de andere bestanden in dezelfde map staan.
+
+### 2. Stack in Portainer
+
+1. Open Portainer op je NAS.
+2. Ga naar **Stacks** → **Add stack**.
+3. Kies **Web editor** en plak de inhoud van `docker-compose.yml`, of kies **Upload** en upload het bestand vanaf de NAS.
+4. Controleer dat poort **3000:3000** wordt gepubliceerd.
+5. Klik op **Deploy the stack**.
+
+Als de stack draait, is de display lokaal beschikbaar op `http://NAS-IP:3000`.
+
+### 3. Cloudflare Tunnel koppelen
+
+De uitgebreide stappen staan in `DEPLOYMENT.md` onder **Optie 2: Cloudflare Tunnel**. Kort:
+
+1. Installeer `cloudflared` op je NAS.
+2. Maak een tunnel aan die naar `http://localhost:3000` wijst.
+3. Koppel een hostname, bijvoorbeeld `3fm.jouwdomein.nl`, aan de tunnel.
+4. Start de tunnel als service, zodat hij automatisch mee opstart.
+
+Daarna kun je de display veilig bereiken via `https://3fm.jouwdomein.nl`.
 
 ### 2. IP Adres Vinden
 
