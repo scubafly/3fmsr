@@ -1,0 +1,397 @@
+/* CSS Variables - Design System */
+:root {
+    /* 3FM Brand Colors - Vibrant & Premium */
+    --color-primary: hsl(280, 85%, 55%);
+    --color-primary-light: hsl(280, 85%, 65%);
+    --color-primary-dark: hsl(280, 85%, 45%);
+    --color-accent: hsl(320, 85%, 55%);
+    --color-accent-glow: hsl(320, 85%, 65%);
+
+    /* Background Colors */
+    --color-bg-primary: hsl(240, 15%, 8%);
+    --color-bg-secondary: hsl(240, 12%, 12%);
+    --color-bg-card: hsl(240, 10%, 15%);
+    --color-bg-card-hover: hsl(240, 10%, 18%);
+
+    /* Text Colors */
+    --color-text-primary: hsl(0, 0%, 98%);
+    --color-text-secondary: hsl(0, 0%, 75%);
+    --color-text-muted: hsl(0, 0%, 55%);
+
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, var(--color-primary) 0%, var(--color-accent) 100%);
+    --gradient-glow: linear-gradient(135deg,
+        hsla(280, 85%, 55%, 0.3) 0%,
+        hsla(320, 85%, 55%, 0.3) 100%);
+
+    /* Spacing */
+    --spacing-xs: 0.5rem;
+    --spacing-sm: 1rem;
+    --spacing-md: 1.5rem;
+    --spacing-lg: 2rem;
+    --spacing-xl: 3rem;
+    --spacing-2xl: 4rem;
+
+    /* Border Radius */
+    --radius-sm: 0.5rem;
+    --radius-md: 1rem;
+    --radius-lg: 1.5rem;
+    --radius-full: 9999px;
+
+    /* Shadows */
+    --shadow-sm: 0 2px 8px hsla(0, 0%, 0%, 0.3);
+    --shadow-md: 0 4px 16px hsla(0, 0%, 0%, 0.4);
+    --shadow-lg: 0 8px 32px hsla(0, 0%, 0%, 0.5);
+    --shadow-glow: 0 0 40px hsla(280, 85%, 55%, 0.4),
+                    0 0 80px hsla(320, 85%, 55%, 0.2);
+
+    /* Typography */
+    --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+/* Reset & Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-family);
+    background: var(--color-bg-primary);
+    color: var(--color-text-primary);
+    line-height: 1.6;
+    min-height: 100vh;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Animated Background */
+body::before {
+    content: '';
+    position: fixed;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle at 30% 50%,
+        hsla(280, 85%, 25%, 0.15) 0%,
+        transparent 50%),
+        radial-gradient(circle at 70% 50%,
+        hsla(320, 85%, 25%, 0.15) 0%,
+        transparent 50%);
+    animation: backgroundShift 20s ease-in-out infinite;
+    z-index: -1;
+}
+
+@keyframes backgroundShift {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    50% { transform: translate(-5%, -5%) rotate(180deg); }
+}
+
+/* Container */
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: var(--spacing-lg);
+    position: relative;
+}
+
+/* Header */
+.header {
+    text-align: center;
+    padding: var(--spacing-xl) 0;
+    margin-bottom: var(--spacing-lg);
+}
+
+.logo-area {
+    display: inline-block;
+    padding: var(--spacing-md) var(--spacing-xl);
+    background: var(--gradient-primary);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-glow);
+    animation: pulseGlow 3s ease-in-out infinite;
+}
+
+@keyframes pulseGlow {
+    0%, 100% {
+        box-shadow: var(--shadow-glow);
+        transform: scale(1);
+    }
+    50% {
+        box-shadow: 0 0 60px hsla(280, 85%, 55%, 0.6),
+                    0 0 120px hsla(320, 85%, 55%, 0.3);
+        transform: scale(1.02);
+    }
+}
+
+.campaign-title {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    margin-bottom: var(--spacing-xs);
+    text-shadow: 0 2px 20px hsla(0, 0%, 0%, 0.5);
+}
+
+.campaign-subtitle {
+    font-size: clamp(1rem, 2vw, 1.25rem);
+    font-weight: 600;
+    opacity: 0.95;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+/* Hero Section - Amount Display */
+.hero {
+    background: var(--color-bg-secondary);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-2xl) var(--spacing-xl);
+    margin-bottom: var(--spacing-xl);
+    box-shadow: var(--shadow-lg);
+    position: relative;
+    overflow: hidden;
+}
+
+.hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--gradient-glow);
+    opacity: 0.05;
+    pointer-events: none;
+}
+
+.amount-display {
+    text-align: center;
+    margin-bottom: var(--spacing-xl);
+    position: relative;
+    z-index: 1;
+}
+
+.current-amount {
+    font-size: clamp(3rem, 10vw, 8rem);
+    font-weight: 900;
+    line-height: 1;
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: var(--spacing-sm);
+    animation: amountPulse 2s ease-in-out infinite;
+}
+
+@keyframes amountPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.02); }
+}
+
+.currency {
+    font-size: 0.6em;
+    opacity: 0.8;
+}
+
+.target-amount {
+    font-size: clamp(1.25rem, 3vw, 2rem);
+    color: var(--color-text-secondary);
+    font-weight: 600;
+}
+
+.target-amount .currency {
+    font-size: 1em;
+}
+
+/* Progress Bar */
+.progress-container {
+    background: var(--color-bg-card);
+    border-radius: var(--radius-full);
+    height: 3rem;
+    position: relative;
+    overflow: hidden;
+    box-shadow: inset 0 2px 8px hsla(0, 0%, 0%, 0.5);
+}
+
+.progress-bar {
+    height: 100%;
+    background: var(--gradient-primary);
+    border-radius: var(--radius-full);
+    transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: var(--spacing-md);
+    box-shadow: 0 0 20px hsla(280, 85%, 55%, 0.5);
+    overflow: hidden;
+}
+
+.progress-bar::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg,
+        transparent,
+        hsla(0, 0%, 100%, 0.3),
+        transparent);
+    animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+    0% { left: -100%; }
+    100% { left: 200%; }
+}
+
+.progress-percentage {
+    font-weight: 700;
+    font-size: 1.125rem;
+    text-shadow: 0 1px 4px hsla(0, 0%, 0%, 0.5);
+    z-index: 1;
+}
+
+/* Donations Section */
+.donations-section {
+    margin-bottom: var(--spacing-xl);
+}
+
+.section-title {
+    font-size: clamp(1.5rem, 3vw, 2.25rem);
+    font-weight: 700;
+    margin-bottom: var(--spacing-lg);
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-sm);
+}
+
+.title-icon {
+    font-size: 1.2em;
+    animation: heartbeat 1.5s ease-in-out infinite;
+}
+
+@keyframes heartbeat {
+    0%, 100% { transform: scale(1); }
+    25% { transform: scale(1.1); }
+    50% { transform: scale(1); }
+}
+
+.donations-list {
+    display: grid;
+    gap: var(--spacing-md);
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+}
+
+.donation-card {
+    background: var(--color-bg-card);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-md);
+    box-shadow: var(--shadow-sm);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid hsla(280, 85%, 55%, 0.1);
+    animation: slideIn 0.5s ease-out backwards;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.donation-card:hover {
+    background: var(--color-bg-card-hover);
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md),
+                0 0 20px hsla(280, 85%, 55%, 0.2);
+    border-color: hsla(280, 85%, 55%, 0.3);
+}
+
+.donation-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-sm);
+}
+
+.donation-name {
+    font-weight: 700;
+    font-size: 1.125rem;
+    color: var(--color-text-primary);
+}
+
+.donation-amount {
+    font-weight: 700;
+    font-size: 1.25rem;
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.donation-message {
+    color: var(--color-text-secondary);
+    font-size: 0.9375rem;
+    font-style: italic;
+    line-height: 1.5;
+    margin-top: var(--spacing-xs);
+}
+
+.loading {
+    text-align: center;
+    color: var(--color-text-muted);
+    padding: var(--spacing-xl);
+    font-size: 1.125rem;
+}
+
+/* Footer */
+.footer {
+    text-align: center;
+    padding: var(--spacing-xl) 0;
+    color: var(--color-text-muted);
+    border-top: 1px solid hsla(0, 0%, 100%, 0.05);
+    margin-top: var(--spacing-2xl);
+}
+
+.footer p {
+    font-size: 0.9375rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        padding: var(--spacing-md);
+    }
+
+    .hero {
+        padding: var(--spacing-xl) var(--spacing-md);
+    }
+
+    .donations-list {
+        grid-template-columns: 1fr;
+    }
+
+    .progress-container {
+        height: 2.5rem;
+    }
+}
+
+/* Print Styles */
+@media print {
+    body::before {
+        display: none;
+    }
+
+    .donation-card {
+        break-inside: avoid;
+    }
+}

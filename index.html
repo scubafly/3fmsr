@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3FM Serious Request - Maasland Merry Miles</title>
+    <meta name="description" content="Live donatie tracker voor de Maasland Merry Miles actie van 3FM Serious Request">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="logo-area">
+                <h1 class="campaign-title">Maasland Merry Miles</h1>
+                <p class="campaign-subtitle">3FM Serious Request</p>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <section class="hero">
+                <div class="amount-display">
+                    <div class="current-amount">
+                        <span class="currency">€</span>
+                        <span id="current-amount" class="amount-value">0</span>
+                    </div>
+                    <div class="target-amount">
+                        van <span class="currency">€</span><span id="target-amount">5000</span>
+                    </div>
+                </div>
+
+                <div class="progress-container">
+                    <div id="progress-bar" class="progress-bar" style="width: 0%">
+                        <span id="progress-percentage" class="progress-percentage">0%</span>
+                    </div>
+                </div>
+            </section>
+
+            <section class="donations-section">
+                <h2 class="section-title">
+                    <span class="title-icon">❤️</span>
+                    Recente Donaties
+                </h2>
+                <div id="donations-list" class="donations-list">
+                    <div class="loading">Laden...</div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="footer">
+            <p>Live updates | Bedankt voor jullie steun! 🎄</p>
+        </footer>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

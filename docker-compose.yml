@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  3fm-display:
+    build: .
+    container_name: 3fm-serious-request
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - TZ=Europe/Amsterdam
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:3000/api', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 5s
