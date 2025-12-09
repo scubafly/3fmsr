@@ -126,8 +126,15 @@ function updateDonations(donations) {
         return;
     }
 
-    // Most recent donations first (reverse order)
-    allDonations = [...donations].reverse();
+    // Filter out anonymous donations without a message
+    allDonations = donations.filter(d => {
+        const isAnonymous = d.name === 'Anoniem' || !d.name;
+        const hasNoMessage = !d.message || d.message.trim() === '';
+        return !(isAnonymous && hasNoMessage);
+    });
+
+    // Sort by amount (highest first)
+    allDonations.sort((a, b) => b.amount - a.amount);
 
     // If there are not many donations, just show all of them
     if (allDonations.length <= MAX_VISIBLE_DONATIONS) {
