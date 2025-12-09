@@ -53,7 +53,10 @@ function serveStaticFile(filePath, res) {
     const ext = path.extname(filePath);
     const contentType = MIME_TYPES[ext] || 'application/octet-stream';
 
-    res.writeHead(200, { 'Content-Type': contentType });
+    res.writeHead(200, {
+      'Content-Type': contentType,
+      'Cache-Control': 'public, max-age=600'
+    });
     res.end(data);
   });
 }
@@ -67,7 +70,8 @@ http.createServer(async (req, res) => {
       const data = await fetch3FM();
       res.writeHead(200, {
         'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*'
+        'Access-Control-Allow-Origin': '*',
+        'Cache-Control': 'public, max-age=600'
       });
       res.end(JSON.stringify(data));
     } catch (e) {
